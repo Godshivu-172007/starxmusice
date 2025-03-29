@@ -52,7 +52,7 @@ async def sudoers_list(client, message: Message, _):
         return await message.reply_text(
             "💔 <b>ᴏᴡɴᴇʀs:</b>\n1➤ <a href='https://t.me/+zofL0InuuzlhNjhl'>🇷🇺⛦Sungjinwu172007°</a>",
             disable_web_page_preview=True,
-            parse_mode="HTML",  # Correct capitalization of parse_mode
+            parse_mode="html",  # Ensure "html" is lowercase
         )
 
     # Initialize the text for sudoers list
@@ -81,4 +81,4 @@ async def sudoers_list(client, message: Message, _):
     if not text:
         await message.reply_text(_["sudo_7"])
     else:
-        await message.reply_text(text, reply_markup=close_markup(_))
+        await message.reply_text(text, reply_markup=close_markup(_), parse_mode="html")
