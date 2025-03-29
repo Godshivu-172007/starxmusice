@@ -47,16 +47,23 @@ async def userdel(client, message: Message, _):
 @app.on_message(filters.command(["sudolist", "listsudo", "sudoers"]) & ~BANNED_USERS)
 @language
 async def sudoers_list(client, message: Message, _):
+    # Display the owner if the user is not in the sudoers list
     if message.from_user.id not in SUDOERS:
-        return await message.reply_text("💔 <b>ᴏᴡɴᴇʀs:</b>\n1➤ <a href='https://t.me/+zofL0InuuzlhNjhl'>🇷🇺⛦Sungjinwu172007°</a>",
-        disable_web_page_preview=True,
-        parse_mode="html")
+        return await message.reply_text(
+            "💔 <b>ᴏᴡɴᴇʀs:</b>\n1➤ <a href='https://t.me/+zofL0InuuzlhNjhl'>🇷🇺⛦Sungjinwu172007°</a>",
+            disable_web_page_preview=True,
+            parse_mode="HTML",  # Correct capitalization of parse_mode
+        )
+
+    # Initialize the text for sudoers list
     text = _["sudo_5"]
     user = await app.get_users(OWNER_ID)
     user = user.first_name if not user.mention else user.mention
     text += f"1➤ {user}\n"
     count = 0
     smex = 0
+
+    # Loop through sudoers and add to the text
     for user_id in SUDOERS:
         if user_id != OWNER_ID:
             try:
@@ -69,6 +76,8 @@ async def sudoers_list(client, message: Message, _):
                 text += f"{count}➤ {user}\n"
             except:
                 continue
+
+    # Handle the case where no sudoers are found
     if not text:
         await message.reply_text(_["sudo_7"])
     else:
