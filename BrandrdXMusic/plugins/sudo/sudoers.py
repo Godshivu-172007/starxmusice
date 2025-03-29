@@ -1,6 +1,6 @@
 from pyrogram import filters
 from pyrogram.types import Message
-
+from html import escape
 from BrandrdXMusic import app
 from BrandrdXMusic.misc import SUDOERS
 from BrandrdXMusic.utils.database import add_sudo, remove_sudo
