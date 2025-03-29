@@ -19,7 +19,7 @@ from BrandrdXMusic.utils.extraction import extract_user
 from config import BANNED_USERS
 
 
-@app.on_message(filters.command(["gban", "globalban"]) & filters.user(SUDOERS))
+@app.on_message(filters.command(["gban", "globalban"]) & filters.user(list(SUDOERS)))  # Fix: Convert SUDOERS to a list
 @language
 async def global_ban(client, message: Message, _):
     """Globally bans a user from all served chats."""
@@ -78,7 +78,7 @@ async def global_ban(client, message: Message, _):
     await mystic.delete()
 
 
-@app.on_message(filters.command(["ungban"]) & filters.user(SUDOERS))
+@app.on_message(filters.command(["ungban"]) & filters.user(list(SUDOERS)))  # Fix: Convert SUDOERS to a list
 @language
 async def global_unban(client, message: Message, _):
     """Globally unbans a user from all served chats."""
@@ -119,7 +119,7 @@ async def global_unban(client, message: Message, _):
     await mystic.delete()
 
 
-@app.on_message(filters.command(["gbannedusers", "gbanlist"]) & filters.user(SUDOERS))
+@app.on_message(filters.command(["gbannedusers", "gbanlist"]) & filters.user(list(SUDOERS)))  # Fix: Convert SUDOERS to a list
 @language
 async def gbanned_list(client, message: Message, _):
     """Lists all globally banned users."""
