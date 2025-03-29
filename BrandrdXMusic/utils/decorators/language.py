@@ -1,7 +1,7 @@
 from strings import get_string
 from BrandrdXMusic.misc import SUDOERS
 from BrandrdXMusic.utils.database import (get_lang, is_maintenance)
-
+from html import escape
 
 def language(mystic):
     async def wrapper(_, message, **kwargs):
