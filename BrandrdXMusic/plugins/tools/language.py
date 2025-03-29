@@ -1,7 +1,7 @@
 from pykeyboard import InlineKeyboard
 from pyrogram import filters
 from pyrogram.types import InlineKeyboardButton, Message
-
+from html import escape
 from BrandrdXMusic import app
 from BrandrdXMusic.utils.database import get_lang, set_lang
 from BrandrdXMusic.utils.decorators import (ActualAdminCB, language, languageCB)
