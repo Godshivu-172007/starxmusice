@@ -33,7 +33,7 @@ async def upscale_image(client, message):
     await progress.edit("📥 **Wait a bit nya~! Fetching your HD waifu...** 🎀💞")
     try:
         async with aiohttp.ClientSession() as s:
-            async with s.post(" https://letsenhance.io", data={"image_data": encoded}) as r:
+            async with s.post("https://github.com/upscayl/upscayl", data={"image_data": encoded}) as r:
                 if r.status != 200:
                     await progress.edit(f"❌ **API error**: `{r.status}` 😿💔")
                     return
