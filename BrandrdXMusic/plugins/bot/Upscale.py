@@ -3,7 +3,7 @@ import base64
 import aiohttp
 import os
 import tempfile
-import app
+
 
 
 @app.on_message(filters.command("up"))
