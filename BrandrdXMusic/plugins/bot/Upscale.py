@@ -3,7 +3,7 @@ import base64
 import aiohttp
 import os
 import tempfile
-from shivu import shivuu as app
+from BrandedXMusic import app
 
 @app.on_message(filters.command("up"))
 async def upscale_image(client, message):
