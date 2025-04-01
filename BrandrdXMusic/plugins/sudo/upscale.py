@@ -5,6 +5,9 @@ import os
 import tempfile
 from BrandrdXMusic import app
 
+# Fetch API Key from Heroku environment variable
+API_KEY = os.getenv("PICSART_API_KEY")
+
 @app.on_message(filters.command("up"))
 async def upscale_image(client, message):
     # Check if the message is a reply to an image
@@ -29,28 +32,38 @@ async def upscale_image(client, message):
         await progress.edit(f"❌ **Failed to encode image**: `{str(e)}` 😿💔")
         return
     
-    # Send request to API
-    await progress.edit("📥 **Wait a bit nya~! Fetching your HD waifu...** 🎀💞")
+    # Send request to Picsart API for upscaling
+    await progress.edit("📥 **Upscaling your image...** 💖")
     try:
-        async with aiohttp.ClientSession() as s:
-            async with s.post("https://waifu2x.me", data={"image_data": encoded}) as r:
-                if r.status != 200:
-                    await progress.edit(f"❌ **API error**: `{r.status}` 😿💔")
+        url = "https://api.picsart.io/v1/upscale"  # Picsart API endpoint for upscaling
+        headers = {
+            "Authorization": f"Bearer {API_KEY}",  # Add your API key here from Heroku environment
+        }
+        data = {
+            "image_data": encoded,  # The base64 encoded image
+        }
+        
+        async with aiohttp.ClientSession() as session:
+            async with session.post(url, headers=headers, data=data) as response:
+                if response.status != 200:
+                    await progress.edit(f"❌ **API error**: `{response.status}` 😿💔")
                     return
-                upscaled_image_data = await r.read()
                 
+                # Get the upscaled image data
+                upscaled_image_data = await response.read()
+
                 # Save the upscaled image in a temporary file
                 with tempfile.NamedTemporaryFile(delete=False, suffix=".png") as out:
                     out.write(upscaled_image_data)
                     upscaled_image_path = out.name
 
-        # Send upscaled image
+        # Send the upscaled image back
         await progress.delete()
         sent = await message.reply_document(
-            upscaled_image_path, 
+            upscaled_image_path,
             caption=f"✨ **Upscaled by @{client.me.username} ~nya!** 🐾💕"
         )
-        
+
         # Generate direct download link
         file_link = f"https://t.me/{client.me.username}?start={sent.document.file_id}"
         await message.reply(
@@ -59,8 +72,8 @@ async def upscale_image(client, message):
         )
 
         # Cleanup: Remove temporary files after use
-        os.remove(image)  # Remove original downloaded image
+        os.remove(image)  # Remove the original image
         os.remove(upscaled_image_path)  # Remove the upscaled image
 
     except Exception as e:
-        await progress.edit(f"❌ **Nyaa~! Error during upscaling process:** `{str(e)}` 😿💔")
+        await progress.edit(f"❌ **Nyaa~! Error during upscaling process**: `{str(e)}` 😿💔")
