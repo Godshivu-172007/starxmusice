@@ -6,7 +6,7 @@ import tempfile
 from BrandrdXMusic import app
 
 # Fetch API Key from Heroku environment variable
-API_KEY = getenv("PICSART_API_KEY")
+API_KEY = os.getenv("PICSART_API_KEY")
 
 @app.on_message(filters.command("up"))
 async def upscale_image(client, message):
